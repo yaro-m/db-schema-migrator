@@ -1,0 +1,14 @@
+<div class="row">
+    <%= if @status != nil do %>
+      <%= for repo <- @status do %>
+          <div class="col-lg-12">
+            <br />
+            <h3><%= get_short_repo_name(get_repo_name(repo)) %></h3>
+          </div>
+          <div class="col-lg-12 <%= get_short_repo_name(get_repo_name(repo)) %>">
+            <%= render "repo_migrations.html", repo: get_repo_name(repo), migrations: get_migrated(repo), repo_id: get_short_repo_name(get_repo_name(repo)) %>
+            <%= render "pending_migrations.html", repo: get_repo_name(repo), migrations: get_pending(repo), repo_id: get_short_repo_name(get_repo_name(repo)) %>
+          </div>
+      <% end %>
+    <% end %>
+</div>

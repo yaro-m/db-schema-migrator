@@ -1,0 +1,55 @@
+<div class="row">
+    <div class="col-lg-12">
+        <br />
+        <h5>Recent Up Migrations (5 most recent):</h5>
+    </div>
+    <div class="col-lg-12">
+        <div class="migrations">
+            <table class="table">
+                <thead>
+                    <%= if length(@migrations) > 0 do %>
+                    <tr>
+                        <th scope="col">State</th>
+                        <th scope="col">Version</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">&nbsp;</th>
+                    </tr>
+                    <% else %>
+                    <tr>
+                        <th colspan="4">There are no migrations</th>
+                    </tr>
+                    <% end %>
+                </thead>
+                <tbody>
+                    <%= for migration <- @migrations do %>
+                    <tr>
+                        <% {timestamp, body} = migration %>
+                        <td>up</td>
+                        <td><a href="#" data-toggle="modal" data-target="#version_<%= timestamp %>"><%= timestamp %></a></td>
+                        <td>n/a</td>
+                        <td width="300">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <%= link("Rollback", to: {:javascript, "void(0)"}, data: [migration: "rollback", repo: "#{@repo}", timestamp: "#{timestamp}"], class: "migrate-link btn btn-danger") %>
+                                <%= link("Unmark as Migrated", to: {:javascript, "void(0)"}, data: [migration: "manual_rollback", repo: "#{@repo}", timestamp: "#{timestamp}"], class: "migrate-link btn btn-warning") %>
+                            </div>
+                        </td>
+                        <div class="modal fade" id="version_<%= timestamp %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="vertical-alignment-helper">
+                                <div class="modal-dialog vertical-align-center modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">Version <%= timestamp %> Code</h4>
+                                        </div>
+                                        <div class="modal-body"><pre><code><%= body %></code></pre></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
